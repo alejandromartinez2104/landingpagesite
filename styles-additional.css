@@ -1,0 +1,259 @@
+/* Additional styles for animations and form success */
+
+/* Form validation and success */
+input.error, textarea.error {
+    border-color: var(--danger);
+    box-shadow: 0 0 0 2px rgba(244, 67, 54, 0.2);
+}
+
+.form-success {
+    background-color: rgba(76, 175, 80, 0.1);
+    border: 1px solid var(--success);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1rem;
+    animation: fadeIn 0.5s ease forwards;
+}
+
+.form-success .icon {
+    color: var(--success);
+    flex-shrink: 0;
+}
+
+.form-success p {
+    margin-bottom: 0;
+}
+
+/* Water cursor effect */
+.water-cursor {
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+    opacity: 0.7;
+    transform: translate(-50%, -50%);
+    transition: width 0.1s ease, height 0.1s ease;
+    display: none;
+}
+
+.water-cursor::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+    opacity: 0.5;
+}
+
+.water-cursor-trail {
+    position: fixed;
+    pointer-events: none;
+    z-index: 9998;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+    opacity: 0.3;
+    transform: translate(-50%, -50%);
+    display: none;
+}
+
+body.has-water-cursor {
+    cursor: none;
+}
+
+body.has-water-cursor a,
+body.has-water-cursor button {
+    cursor: none;
+}
+
+/* Add this to main.js to enable water cursor
+document.addEventListener('DOMContentLoaded', function() {
+    // Water cursor effect (desktop only)
+    if (window.innerWidth > 768) {
+        const cursor = document.createElement('div');
+        cursor.className = 'water-cursor';
+        document.body.appendChild(cursor);
+        
+        const trails = [];
+        const trailCount = 5;
+        
+        // Create trail elements
+        for (let i = 0; i < trailCount; i++) {
+            const trail = document.createElement('div');
+            trail.className = 'water-cursor-trail';
+            document.body.appendChild(trail);
+            trails.push(trail);
+        }
+        
+        // Track mouse position
+        let mouseX = 0;
+        let mouseY = 0;
+        let trailPositions = Array(trailCount).fill().map(() => ({ x: 0, y: 0 }));
+        
+        document.addEventListener('mousemove', e => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            
+            // Show cursor and trails
+            cursor.style.display = 'block';
+            trails.forEach(trail => {
+                trail.style.display = 'block';
+            });
+            
+            // Add class to body
+            document.body.classList.add('has-water-cursor');
+        });
+        
+        // Animation loop
+        function updateCursor() {
+            // Update main cursor
+            cursor.style.left = `${mouseX}px`;
+            cursor.style.top = `${mouseY}px`;
+            
+            // Update trail positions with delay
+            for (let i = 0; i < trailCount; i++) {
+                // Calculate new position with easing
+                trailPositions[i].x += (mouseX - trailPositions[i].x) * (0.2 / (i + 1));
+                trailPositions[i].y += (mouseY - trailPositions[i].y) * (0.2 / (i + 1));
+                
+                // Update trail element
+                const trail = trails[i];
+                trail.style.left = `${trailPositions[i].x}px`;
+                trail.style.top = `${trailPositions[i].y}px`;
+                
+                // Set size based on position in trail
+                const size = 16 - (i * 2);
+                trail.style.width = `${size}px`;
+                trail.style.height = `${size}px`;
+                
+                // Set opacity based on position in trail
+                trail.style.opacity = 0.5 - (i * 0.1);
+            }
+            
+            requestAnimationFrame(updateCursor);
+        }
+        
+        updateCursor();
+        
+        // Handle mouse leaving window
+        document.addEventListener('mouseleave', () => {
+            cursor.style.display = 'none';
+            trails.forEach(trail => {
+                trail.style.display = 'none';
+            });
+            document.body.classList.remove('has-water-cursor');
+        });
+        
+        // Handle mouse clicks
+        document.addEventListener('mousedown', () => {
+            cursor.style.width = '16px';
+            cursor.style.height = '16px';
+        });
+        
+        document.addEventListener('mouseup', () => {
+            cursor.style.width = '20px';
+            cursor.style.height = '20px';
+        });
+    }
+});
+*/
+
+/* Performance optimizations */
+.will-change-transform {
+    will-change: transform;
+}
+
+.will-change-opacity {
+    will-change: opacity;
+}
+
+/* Preload animation */
+.preload-animation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.preload-animation.loaded {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.preload-animation .water-drop {
+    width: 60px;
+    height: 60px;
+    background-color: var(--primary-color);
+    border-radius: 50%;
+    position: relative;
+    animation: bounce 1.5s infinite ease-in-out;
+}
+
+.preload-animation .water-drop::before {
+    content: '';
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 30px;
+    background-color: var(--primary-color);
+    border-radius: 50%;
+    opacity: 0.7;
+}
+
+.preload-animation .water-drop::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 20px;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    filter: blur(5px);
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+/* Add this to index.html before closing body tag to enable preload animation
+<div class="preload-animation" id="preloader">
+    <div class="water-drop"></div>
+</div>
+
+<script>
+    window.addEventListener('load', function() {
+        const preloader = document.getElementById('preloader');
+        if (preloader) {
+            preloader.classList.add('loaded');
+            setTimeout(() => {
+                preloader.remove();
+            }, 500);
+        }
+    });
+</script>
+*/
